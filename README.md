@@ -1,1 +1,1 @@
-# Udemy Shopify Theme Dev Practice
+## Udemy Shopify Theme Dev Practice
