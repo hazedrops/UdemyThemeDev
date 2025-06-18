@@ -156,6 +156,7 @@
   class CustomerAddress {
     constructor() {
       this.initCustomerAddress();
+      this.customerAddressesSelector();
     }
   
     initCustomerAddress() {
@@ -177,12 +178,18 @@
         } else {
           provinceSelector.removeAttribute('disabled');
         }
-
+  
         provinceSelector.innerHTML = '';
-
+  
         for(var index = 0; index < arrayOfProvince.length; index++) {
-
+          if(arrayOfProvince[index][0] === provinceSelector.getAttribute('value')) {
+            options += `<option value="${arrayOfProvince[index][0]}" selected> ${arrayOfProvince[index][0]}</option>`;
+          } else {
+            options += `<option value="${arrayOfProvince[index][0]}"> ${arrayOfProvince[index][0]}</option>`;
+          }
         }
+  
+        provinceSelector.innerHTML = options;
       })
     }
   
@@ -198,6 +205,36 @@
         }
       }
       return selectedOption;
+    }
+  
+    customerAddressesSelector() {
+      const addressesSelector = document.querySelectorAll("select[data-country-selector]");
+  
+      if(addressesSelector.length < 1) return;
+  
+      addressesSelector.forEach(select => {
+        select.addEventListener('change', function(e) {
+          var provinces = this.options[this.selectedIndex].dataset.provinces;
+          var arrayOfProvince = JSON.parse(provinces);
+  
+          var provinceSelector = document.querySelector(`#address_province_${this.dataset.id}`);
+  
+          if(arrayOfProvince.length < 1) {
+            provinceSelector.setAttribute('disabled', 'disabled');
+          } else {
+            provinceSelector.removeAttribute('disabled');
+          }
+  
+          provinceSelector.innerHTML = '';
+  
+          var options = '';
+          for(var index = 0; index < arrayOfProvince.length; index++) {
+            options += `<option value="${arrayOfProvince[index][0]}">${arrayOfProvince[index][0]}</option>`
+          }
+  
+          provinceSelector.innerHTML = options;
+        })
+      })
     }
   }
   
